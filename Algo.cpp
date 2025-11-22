@@ -161,8 +161,8 @@ PathNode* findShortestPath2D(double adjMatrix[100][100], int coords[100][2], int
             int node = goal;
             while (node != -1)
             {
-                node = parent[node];
                 path.push_back(node);
+                node = parent[node];
             }
             reverse(path.begin(), path.end());
 
@@ -170,7 +170,10 @@ PathNode* findShortestPath2D(double adjMatrix[100][100], int coords[100][2], int
             PathNode* tail = nullptr;
             for (int i = 0; i < path.size(); i++)
             {
-                appendNode(head, tail, to_string(path[i]), gCost[i] + heuristicTask2(coords, i, goal, mode), gCost[i], heuristicTask2(coords, i, goal, mode));
+                double g_rounded = round(gCost[path[i]] * 100) / 100;
+                double h_val = heuristicTask2(coords, path[i], goal, mode);
+                double f_rounded = round((g_rounded + h_val) * 100) / 100;
+                appendNode(head, tail, to_string(path[i]), f_rounded, g_rounded, h_val);
             }
             return head;
         }
@@ -217,18 +220,17 @@ struct MazeNode
 };
 
 // direction vectors for moving in 8 possible directions
-//  up , down, left, right, up-left, up-right, down-left, down-right
-//  quy ước
-//  0 : Up
-//  1 : Down
-//  2 : Left
-//  3 : Right
-//  4 : Up-Left
-//  5 : Up-Right
-//  6 : Down-Left
-//  7 : Down-Right
-int dirX[8] = {0, 0, -1, 1, -1, 1, -1, 1};
-int dirY[8] = {1, -1, 0, 0, 1, 1, -1, -1};
+//  quy ước (maze coordinate: x=row, y=column)
+//  0 : Up      (x-1, y)
+//  1 : Down    (x+1, y)
+//  2 : Left    (x, y-1)
+//  3 : Right   (x, y+1)
+//  4 : Up-Left (x-1, y-1)
+//  5 : Up-Right (x-1, y+1)
+//  6 : Down-Left (x+1, y-1)
+//  7 : Down-Right (x+1, y+1)
+int dirX[8] = {-1, 1, 0, 0, -1, -1, 1, 1};
+int dirY[8] = {0, 0, -1, 1, -1, 1, -1, 1};
 string directionNames[8] = {"Up", "Down", "Left", "Right", "Up-Left", "Up-Right", "Down-Left", "Down-Right"};
 //
 
@@ -236,8 +238,17 @@ double heuristicTask3_4(int x1, int y1, int x2, int y2)
 {
     return abs(x1 - x2) + abs(y1 - y2);
 }
-PathNode* findShortestPathMaze(int maze[100][100], int m, int n, int startX, int startY, int goalX, int goalY)
+PathNode* findPathInMaze(int maze[100][100], int m, int n, int startX, int startY, int goalX, int goalY)
 {
+    // Handle start = goal case
+    if (startX == goalX && startY == goalY)
+    {
+        PathNode* head = nullptr;
+        PathNode* tail = nullptr;
+        appendNode(head, tail, "", 0.0, 0.0, 0.0);
+        return head;
+    }
+
     vector<vector<bool>> visited(m, vector<bool>(n, false));
     vector<MazeNode> openList;
     vector<vector<MazeNode>> NodesInfo(m, vector<MazeNode>(n, MazeNode(-1, -1, 0, 0, 0, -1, -1, "")));
@@ -269,12 +280,12 @@ PathNode* findShortestPathMaze(int maze[100][100], int m, int n, int startX, int
             continue;
         visited[current_Node.x][current_Node.y] = 1;
 
-        if (current_Node.x == goalX || current_Node.y == goalY)
+        if (current_Node.x == goalX && current_Node.y == goalY)
         {
             vector<MazeNode> path;
             int x_it = goalX;
             int y_it = goalY;
-            while (x_it != startX && y_it != startY)
+            while (x_it != startX || y_it != startY)
             {
                 path.push_back(NodesInfo[x_it][y_it]);
                 int parent_AssignX = NodesInfo[x_it][y_it].parentX;
@@ -408,4 +419,5 @@ PathNode* findPathInMaze2(int maze[100][100], int m, int n, int startX, int star
             }
         }
     }
+    return nullptr;
 }
