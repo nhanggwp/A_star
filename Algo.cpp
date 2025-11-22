@@ -37,8 +37,9 @@ double heuristicTask1(int current, int goal)
     // Simple heuristic: return 0 for Dijkstra-like behavior
     return 0.0;
 }
-PathNode* findShortestPathMatrix(double adjMatrix[100][100], int n, int start, int goal)
+PathNode* findShortestPathMatrix(double adjMatrix[100][100], int start, int goal)
 {
+    int n = 100;  // Fixed size based on adjMatrix[100][100]
     std::vector<bool> visited(n, false);
     std::vector<AStarNode> openList;
     std::vector<int> parent(n, -1);
@@ -128,8 +129,9 @@ double heuristicTask2(int coords[100][2], int current, int goal, int mode)
         return euclideanHeuristic(coords, current, goal);
     }
 }
-PathNode* findShortestPath2D(double adjMatrix[100][100], int coords[100][2], int n, int start, int goal, int mode)
+PathNode* findShortestPath2D(double adjMatrix[100][100], int coords[100][2], int start, int goal, int mode)
 {
+    int n = 100;  // Fixed size based on adjMatrix[100][100]
     vector<bool> visited(n, false);
     vector<AStarNode> openList;
     vector<int> parent(n, -1);
@@ -219,20 +221,21 @@ struct MazeNode
     }
 };
 
+// ...existing code...
 // direction vectors for moving in 8 possible directions
-//  quy ước (maze coordinate: x=row, y=column)
-//  0 : Up      (x-1, y)
-//  1 : Down    (x+1, y)
-//  2 : Left    (x, y-1)
-//  3 : Right   (x, y+1)
-//  4 : Up-Left (x-1, y-1)
-//  5 : Up-Right (x-1, y+1)
-//  6 : Down-Left (x+1, y-1)
+// quy ước (maze coordinate: x=column, y=row)
+//  0 : Up         (x+0, y-1)
+//  1 : Down       (x+0, y+1)
+//  2 : Left       (x-1, y+0)
+//  3 : Right      (x+1, y+0)
+//  4 : Up-Left    (x-1, y-1)
+//  5 : Up-Right   (x+1, y-1)
+//  6 : Down-Left  (x-1, y+1)
 //  7 : Down-Right (x+1, y+1)
-int dirX[8] = {-1, 1, 0, 0, -1, -1, 1, 1};
-int dirY[8] = {0, 0, -1, 1, -1, 1, -1, 1};
-string directionNames[8] = {"Up", "Down", "Left", "Right", "Up-Left", "Up-Right", "Down-Left", "Down-Right"};
-//
+int dirX[8] = {0, 0, -1, 1, -1, 1, -1, 1};
+int dirY[8] = {-1, 1, 0, 0, -1, -1, 1, 1};
+string directionNames[8] = {
+    "Up", "Down", "Left", "Right", "Up-Left", "Up-Right", "Down-Left", "Down-Right"};
 
 double heuristicTask3_4(int x1, int y1, int x2, int y2)
 {
@@ -349,8 +352,8 @@ PathNode* findPathInMaze2(int maze[100][100], int m, int n, int startX, int star
     vector<vector<bool>> visited(m, vector<bool>(n, false));
     vector<MazeNode> openList;
     vector<vector<MazeNode>> NodeInfo(m, vector<MazeNode>(n, MazeNode(-1, -1, 0, 0, 0, -1, -1, "")));
-    // initialize gcost
-    int gCost[m][n];
+    // initialize gcost - use fixed size array
+    double gCost[100][100];
     for (int i = 0; i < m; i++)
         for (int j = 0; j < n; j++)
             gCost[i][j] = INF;

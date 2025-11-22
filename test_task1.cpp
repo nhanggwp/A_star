@@ -71,7 +71,7 @@ void test1()
     double adj[100][100] = {0};
     adj[0][1] = 1.0;
     adj[1][2] = 2.0;
-    PathNode* result = findShortestPathMatrix(adj, 3, 0, 2);
+    PathNode* result = findShortestPathMatrix(adj, 0, 2);
     checkResult("Test 1: Simple 3-node linear path", result, "0->1->2", 3.0);
     deletePathList(result);
 }
@@ -81,7 +81,7 @@ void test2()
 {
     double adj[100][100] = {0};
     adj[0][1] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 3, 1, 1);
+    PathNode* result = findShortestPathMatrix(adj, 1, 1);
     checkResult("Test 2: Start equals goal", result, "1", 0.0);
     deletePathList(result);
 }
@@ -92,7 +92,7 @@ void test3()
     double adj[100][100] = {0};
     adj[0][1] = 1.0;
     adj[2][3] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 4, 0, 3);
+    PathNode* result = findShortestPathMatrix(adj, 0, 3);
     checkResult("Test 3: No path exists", result, "null", -1.0);
     deletePathList(result);
 }
@@ -105,7 +105,7 @@ void test4()
     adj[1][3] = 2.0;  // Path 1: cost 3
     adj[0][2] = 1.5;
     adj[2][3] = 1.0;  // Path 2: cost 2.5 (shorter)
-    PathNode* result = findShortestPathMatrix(adj, 4, 0, 3);
+    PathNode* result = findShortestPathMatrix(adj, 0, 3);
     checkResult("Test 4: Multiple paths (choose shortest)", result, "0->2->3", 2.5);
     deletePathList(result);
 }
@@ -114,7 +114,7 @@ void test4()
 void test5()
 {
     double adj[100][100] = {0};
-    PathNode* result = findShortestPathMatrix(adj, 1, 0, 0);
+    PathNode* result = findShortestPathMatrix(adj, 0, 0);
     checkResult("Test 5: Single node graph", result, "0", 0.0);
     deletePathList(result);
 }
@@ -129,7 +129,7 @@ void test6()
     adj[1][2] = 2.0;
     adj[1][3] = 1.0;
     adj[2][3] = 4.0;
-    PathNode* result = findShortestPathMatrix(adj, 4, 0, 3);
+    PathNode* result = findShortestPathMatrix(adj, 0, 3);
     checkResult("Test 6: Complete graph (0->1->3)", result, "0->1->3", 6.0);
     deletePathList(result);
 }
@@ -142,7 +142,7 @@ void test7()
     {
         adj[i][i + 1] = 1.0;
     }
-    PathNode* result = findShortestPathMatrix(adj, 6, 0, 5);
+    PathNode* result = findShortestPathMatrix(adj, 0, 5);
     checkResult("Test 7: Long chain 0->1->2->3->4->5", result, "0->1->2->3->4->5", 5.0);
     deletePathList(result);
 }
@@ -155,7 +155,7 @@ void test8()
     adj[0][2] = 1.0;
     adj[1][3] = 1.0;
     adj[2][3] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 4, 0, 3);
+    PathNode* result = findShortestPathMatrix(adj, 0, 3);
     checkResult("Test 8: Diamond (equal paths)", result, "0->1->3", 2.0);
     deletePathList(result);
 }
@@ -168,7 +168,7 @@ void test9()
     adj[0][2] = 4.0;
     adj[1][3] = 5.0;
     adj[2][3] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 4, 0, 3);
+    PathNode* result = findShortestPathMatrix(adj, 0, 3);
     checkResult("Test 9: Weighted diamond (0->2->3)", result, "0->2->3", 5.0);
     deletePathList(result);
 }
@@ -181,7 +181,7 @@ void test10()
     adj[1][2] = 1.0;
     adj[2][3] = 1.0;
     adj[3][0] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 4, 0, 2);
+    PathNode* result = findShortestPathMatrix(adj, 0, 2);
     checkResult("Test 10: Cycle 0->1->2", result, "0->1->2", 2.0);
     deletePathList(result);
 }
@@ -195,7 +195,7 @@ void test11()
     adj[3][5] = 1.0;
     adj[5][7] = 3.0;
     adj[7][9] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 10, 0, 9);
+    PathNode* result = findShortestPathMatrix(adj, 0, 9);
     checkResult("Test 11: Sparse graph (10 nodes)", result, "0->1->3->5->7->9", 8.0);
     deletePathList(result);
 }
@@ -208,7 +208,7 @@ void test12()
     adj[1][3] = 2.0;
     adj[0][2] = 2.0;
     adj[2][3] = 2.0;
-    PathNode* result = findShortestPathMatrix(adj, 4, 0, 3);
+    PathNode* result = findShortestPathMatrix(adj, 0, 3);
     checkResult("Test 12: Two equal-cost paths", result, "0->1->3", 4.0);
     deletePathList(result);
 }
@@ -222,7 +222,7 @@ void test13()
     adj[1][3] = 1.0;
     adj[2][3] = 1.0;
     adj[3][4] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 5, 0, 4);
+    PathNode* result = findShortestPathMatrix(adj, 0, 4);
     checkResult("Test 13: All edges weight 1.0", result, "0->1->3->4", 3.0);
     deletePathList(result);
 }
@@ -233,7 +233,7 @@ void test14()
     double adj[100][100] = {0};
     adj[0][1] = 1000.0;
     adj[1][2] = 2000.0;
-    PathNode* result = findShortestPathMatrix(adj, 3, 0, 2);
+    PathNode* result = findShortestPathMatrix(adj, 0, 2);
     checkResult("Test 14: Very large weights", result, "0->1->2", 3000.0);
     deletePathList(result);
 }
@@ -244,7 +244,7 @@ void test15()
     double adj[100][100] = {0};
     adj[0][1] = 0.001;
     adj[1][2] = 0.002;
-    PathNode* result = findShortestPathMatrix(adj, 3, 0, 2);
+    PathNode* result = findShortestPathMatrix(adj, 0, 2);
     checkResult("Test 15: Very small weights", result, "0->1->2", 0.003);
     deletePathList(result);
 }
@@ -257,7 +257,7 @@ void test16()
     adj[1][2] = 1.0;
     adj[1][3] = 1.0;
     adj[1][4] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 5, 0, 4);
+    PathNode* result = findShortestPathMatrix(adj, 0, 4);
     checkResult("Test 16: Star topology", result, "0->1->4", 2.0);
     deletePathList(result);
 }
@@ -269,7 +269,7 @@ void test17()
     adj[0][1] = 1.0;
     adj[1][2] = 1.0;
     adj[2][0] = 1.0;  // backward edge
-    PathNode* result = findShortestPathMatrix(adj, 3, 0, 2);
+    PathNode* result = findShortestPathMatrix(adj, 0, 2);
     checkResult("Test 17: Directed graph", result, "0->1->2", 2.0);
     deletePathList(result);
 }
@@ -286,7 +286,7 @@ void test18()
     adj[3][5] = 1.0;
     adj[4][3] = 2.0;
     adj[4][5] = 5.0;
-    PathNode* result = findShortestPathMatrix(adj, 6, 0, 5);
+    PathNode* result = findShortestPathMatrix(adj, 0, 5);
     checkResult("Test 18: Complex 6-node graph", result, "0->1->2->4->3->5", 9);
     deletePathList(result);
 }
@@ -298,7 +298,7 @@ void test19()
     adj[0][0] = 100.0;  // self-loop
     adj[0][1] = 1.0;
     adj[1][2] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 3, 0, 2);
+    PathNode* result = findShortestPathMatrix(adj, 0, 2);
     checkResult("Test 19: Self-loop (ignore)", result, "0->1->2", 2.0);
     deletePathList(result);
 }
@@ -314,7 +314,7 @@ void test20()
     adj[0][5] = 3.0;
     adj[5][10] = 3.0;
     adj[10][19] = 5.0;
-    PathNode* result = findShortestPathMatrix(adj, 20, 0, 19);
+    PathNode* result = findShortestPathMatrix(adj, 0, 19);
     checkResult("Test 20: Large graph with shortcuts", result, "0->5->10->19", 11.0);
     deletePathList(result);
 }
@@ -326,7 +326,7 @@ void test21()
     adj[0][1] = 3.0;
     adj[1][2] = 4.0;
     adj[0][2] = 6.0;
-    PathNode* result = findShortestPathMatrix(adj, 3, 0, 2);
+    PathNode* result = findShortestPathMatrix(adj, 0, 2);
     checkResult("Test 21: Triangle (direct vs indirect)", result, "0->2", 6.0);
     deletePathList(result);
 }
@@ -335,7 +335,7 @@ void test21()
 void test22()
 {
     double adj[100][100] = {0};
-    PathNode* result = findShortestPathMatrix(adj, 5, 0, 4);
+    PathNode* result = findShortestPathMatrix(adj, 0, 4);
     checkResult("Test 22: All disconnected", result, "null", -1.0);
     deletePathList(result);
 }
@@ -348,7 +348,7 @@ void test23()
     adj[1][0] = 2.0;
     adj[1][2] = 3.0;
     adj[2][1] = 3.0;
-    PathNode* result = findShortestPathMatrix(adj, 3, 0, 2);
+    PathNode* result = findShortestPathMatrix(adj, 0, 2);
     checkResult("Test 23: Undirected graph", result, "0->1->2", 5.0);
     deletePathList(result);
 }
@@ -365,7 +365,7 @@ void test24()
     adj[2][5] = 1.0;
     adj[3][5] = 1.0;
     adj[4][5] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 6, 0, 5);
+    PathNode* result = findShortestPathMatrix(adj, 0, 5);
     checkResult("Test 24: High branching factor", result, "0->1->5", 2.0);
     deletePathList(result);
 }
@@ -376,7 +376,7 @@ void test25()
     double adj[100][100] = {0};
     for (int i = 0; i < 9; i++) adj[i][i + 1] = 1.0;
     adj[0][9] = 8.0;  // shortcut
-    PathNode* result = findShortestPathMatrix(adj, 10, 0, 9);
+    PathNode* result = findShortestPathMatrix(adj, 0, 9);
     checkResult("Test 25: Long path vs shortcut", result, "0->9", 8.0);
     deletePathList(result);
 }
@@ -389,7 +389,7 @@ void test26()
     adj[1][2] = 1.0;
     adj[3][4] = 1.0;
     adj[4][5] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 6, 0, 5);
+    PathNode* result = findShortestPathMatrix(adj, 0, 5);
     checkResult("Test 26: Disconnected components", result, "null", -1.0);
     deletePathList(result);
 }
@@ -401,7 +401,7 @@ void test27()
     adj[0][1] = 1.5;
     adj[1][2] = 2.3;
     adj[2][3] = 0.7;
-    PathNode* result = findShortestPathMatrix(adj, 4, 0, 3);
+    PathNode* result = findShortestPathMatrix(adj, 0, 3);
     checkResult("Test 27: Fractional weights", result, "0->1->2->3", 4.5);
     deletePathList(result);
 }
@@ -416,7 +416,7 @@ void test28()
     adj[1][4] = 1.0;
     adj[2][4] = 1.0;
     adj[3][4] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 5, 0, 4);
+    PathNode* result = findShortestPathMatrix(adj, 0, 4);
     checkResult("Test 28: Many equal paths", result, "0->1->4", 2.0);
     deletePathList(result);
 }
@@ -427,7 +427,7 @@ void test29()
     double adj[100][100] = {0};
     adj[2][1] = 1.0;
     adj[1][0] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 3, 0, 2);
+    PathNode* result = findShortestPathMatrix(adj, 0, 2);
     checkResult("Test 29: No forward path", result, "null", -1.0);
     deletePathList(result);
 }
@@ -443,7 +443,7 @@ void test30()
             adj[i][j] = (i + 1) * (j + 1) * 0.5;
         }
     }
-    PathNode* result = findShortestPathMatrix(adj, 5, 0, 4);
+    PathNode* result = findShortestPathMatrix(adj, 0, 4);
     checkResult("Test 30: Dense graph", result, "0->4", 2.5);
     deletePathList(result);
 }
@@ -461,7 +461,7 @@ void test31()
     adj[6][7] = 1.5;
     adj[7][8] = 2.0;
     adj[8][9] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 10, 0, 9);
+    PathNode* result = findShortestPathMatrix(adj, 0, 9);
     checkResult("Test 31: Long path 10 nodes", result, "0->1->2->3->4->5->6->7->8->9", 13.5);
     deletePathList(result);
 }
@@ -477,7 +477,7 @@ void test32()
     adj[3][6] = 2.5;
     adj[6][9] = 2.5;
     adj[9][11] = 1.5;
-    PathNode* result = findShortestPathMatrix(adj, 12, 0, 11);
+    PathNode* result = findShortestPathMatrix(adj, 0, 11);
     checkResult("Test 32: Multiple shortcuts", result, "0->3->6->9->11", 9.0);
     deletePathList(result);
 }
@@ -498,7 +498,7 @@ void test33()
     adj[5][7] = 1.0;
     adj[6][8] = 1.0;
     adj[7][8] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 9, 0, 8);
+    PathNode* result = findShortestPathMatrix(adj, 0, 8);
     checkResult("Test 33: Grid-like structure", result, "0->1->4->6->8", 4.0);
     deletePathList(result);
 }
@@ -519,7 +519,7 @@ void test34()
     adj[0][9] = 1.0;
     adj[9][10] = 1.0;
     adj[10][8] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 11, 0, 8);
+    PathNode* result = findShortestPathMatrix(adj, 0, 8);
     checkResult("Test 34: Heavy middle bottleneck", result, "0->9->10->8", 3.0);
     deletePathList(result);
 }
@@ -539,7 +539,7 @@ void test35()
     adj[6][5] = 1.0;
     adj[5][7] = 1.0;
     adj[7][8] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 9, 0, 8);
+    PathNode* result = findShortestPathMatrix(adj, 0, 8);
     checkResult("Test 35: Zig-zag pattern", result, "0->1->3->5->7->8", 5.0);
     deletePathList(result);
 }
@@ -560,7 +560,7 @@ void test36()
     adj[6][7] = 1.0;
     adj[7][8] = 1.0;
     adj[8][9] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 10, 0, 9);
+    PathNode* result = findShortestPathMatrix(adj, 0, 9);
     checkResult("Test 36: Wide then narrow funnel", result, "0->1->5->6->7->8->9", 7.0);
     deletePathList(result);
 }
@@ -579,7 +579,7 @@ void test37()
     adj[4][7] = 1.0;
     adj[5][7] = 3.0;
     adj[6][7] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 8, 0, 7);
+    PathNode* result = findShortestPathMatrix(adj, 0, 7);
     checkResult("Test 37: Binary tree paths", result, "0->1->3->7", 4.0);
     deletePathList(result);
 }
@@ -592,7 +592,7 @@ void test38()
     {
         adj[i][i + 1] = i + 1.0;
     }
-    PathNode* result = findShortestPathMatrix(adj, 12, 0, 11);
+    PathNode* result = findShortestPathMatrix(adj, 0, 11);
     checkResult("Test 38: Increasing edge costs", result, "0->1->2->3->4->5->6->7->8->9->10->11", 66.0);
     deletePathList(result);
 }
@@ -612,7 +612,7 @@ void test39()
     adj[2][8] = 1.0;
     adj[8][9] = 1.0;
     adj[9][10] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 11, 0, 10);
+    PathNode* result = findShortestPathMatrix(adj, 0, 10);
     checkResult("Test 39: Hub-spoke 10+ nodes", result, "0->1->2->8->9->10", 6.0);
     deletePathList(result);
 }
@@ -637,7 +637,7 @@ void test40()
     // Layer 3->4
     adj[6][8] = 1.0;
     adj[7][8] = 2.0;
-    PathNode* result = findShortestPathMatrix(adj, 9, 0, 8);
+    PathNode* result = findShortestPathMatrix(adj, 0, 8);
     checkResult("Test 40: Layered graph 4 layers", result, "0->1->3->6->8", 5.0);
     deletePathList(result);
 }
@@ -663,7 +663,7 @@ void test41()
     // Shortcut
     adj[0][7] = 6.0;
     adj[7][14] = 6.0;
-    PathNode* result = findShortestPathMatrix(adj, 15, 0, 14);
+    PathNode* result = findShortestPathMatrix(adj, 0, 14);
     checkResult("Test 41: Spiral path 15 nodes", result, "0->7->14", 12.0);
     deletePathList(result);
 }
@@ -688,7 +688,7 @@ void test42()
     adj[9][11] = 2.0;
     adj[10][12] = 1.0;
     adj[11][12] = 0.5;
-    PathNode* result = findShortestPathMatrix(adj, 13, 0, 12);
+    PathNode* result = findShortestPathMatrix(adj, 0, 12);
     checkResult("Test 42: Diamond cascade", result, "0->1->3->4->6->7->9->10->12", 8.0);
     deletePathList(result);
 }
@@ -713,7 +713,7 @@ void test43()
     adj[3][6] = 2.5;
     adj[4][7] = 2.5;
     adj[5][8] = 2.5;
-    PathNode* result = findShortestPathMatrix(adj, 9, 0, 8);
+    PathNode* result = findShortestPathMatrix(adj, 0, 8);
     checkResult("Test 43: Cross connections", result, "0->1->2->5->8", 7.0);
     deletePathList(result);
 }
@@ -729,7 +729,7 @@ void test44()
             adj[i][j] = (i + j) * 0.3 + 1.0;
         }
     }
-    PathNode* result = findShortestPathMatrix(adj, 7, 0, 6);
+    PathNode* result = findShortestPathMatrix(adj, 0, 6);
     checkResult("Test 44: Very dense 7-node graph", result, "0->6", 2.8);
     deletePathList(result);
 }
@@ -745,7 +745,7 @@ void test45()
     // Shortcut
     adj[0][6] = 4.0;
     adj[6][13] = 4.0;
-    PathNode* result = findShortestPathMatrix(adj, 14, 0, 13);
+    PathNode* result = findShortestPathMatrix(adj, 0, 13);
     checkResult("Test 45: Alternating costs with shortcuts", result, "0->6->13", 8.0);
     deletePathList(result);
 }
@@ -772,7 +772,7 @@ void test46()
     adj[10][11] = 2.0;
     adj[11][12] = 2.0;
     adj[12][9] = 2.0;
-    PathNode* result = findShortestPathMatrix(adj, 13, 0, 9);
+    PathNode* result = findShortestPathMatrix(adj, 0, 9);
     checkResult("Test 46: Bottleneck bypass", result, "0->10->11->12->9", 8.0);
     deletePathList(result);
 }
@@ -797,7 +797,7 @@ void test47()
     adj[8][9] = 0.5;
     adj[9][10] = 0.5;
     adj[10][11] = 0.5;
-    PathNode* result = findShortestPathMatrix(adj, 12, 0, 11);
+    PathNode* result = findShortestPathMatrix(adj, 0, 11);
     checkResult("Test 47: Three parallel paths", result, "0->1->2->3->11", 4.0);
     deletePathList(result);
 }
@@ -832,7 +832,7 @@ void test48()
     adj[7][12] = 1.5;
     adj[8][13] = 1.5;
     adj[9][14] = 1.5;
-    PathNode* result = findShortestPathMatrix(adj, 15, 0, 14);
+    PathNode* result = findShortestPathMatrix(adj, 0, 14);
     checkResult("Test 48: Mesh network 15 nodes", result, "0->1->2->3->4->9->14", 7);
     deletePathList(result);
 }
@@ -858,7 +858,7 @@ void test49()
     adj[10][11] = 1.0;
     adj[11][12] = 1.0;
     adj[12][6] = 1.0;
-    PathNode* result = findShortestPathMatrix(adj, 13, 0, 6);
+    PathNode* result = findShortestPathMatrix(adj, 0, 6);
     checkResult("Test 49: Exponential vs linear", result, "0->1->8->9->10->11->12->6", 9.0);
     deletePathList(result);
 }
@@ -896,7 +896,7 @@ void test50()
     adj[16][18] = 2.0;
     adj[17][18] = 1.7;
     adj[18][19] = 1.2;
-    PathNode* result = findShortestPathMatrix(adj, 20, 0, 19);
+    PathNode* result = findShortestPathMatrix(adj, 0, 19);
     checkResult("Test 50: Complex 20-node graph", result, "0->2->5->8->10->13->14->16->18->19", 14.8);
     deletePathList(result);
 }
