@@ -50,12 +50,12 @@ PathNode* findShortestPathMatrix(double adjMatrix[100][100], int n, int start, i
 
     while (!openList.empty())
     {
-        sort(openList.begin(), openList.end(), [](const AStarNode &a, const AStarNode &b) {
+        sort(openList.begin(), openList.end(), [](const AStarNode& a, const AStarNode& b)
+             {
             if (a.f == b.f)
                 return a.vertex < b.vertex;
-            return a.f < b.f;
-        });
-        
+            return a.f < b.f; });
+
         int current_vertex = openList[0].vertex;
         AStarNode currentNode = openList[0];
         openList.erase(openList.begin());
@@ -98,6 +98,7 @@ PathNode* findShortestPathMatrix(double adjMatrix[100][100], int n, int start, i
             }
         }
     }
+    return nullptr;
 }
 
 // Task 2: Shortest Path in 2D Space with Two Heuristics
@@ -138,11 +139,11 @@ PathNode* findShortestPath2D(double adjMatrix[100][100], int coords[100][2], int
 
     while (!openList.empty())
     {
-        sort(openList.begin(), openList.end(), [](const AStarNode &a, const AStarNode &b) {
+        sort(openList.begin(), openList.end(), [](const AStarNode& a, const AStarNode& b)
+             {
             if (a.f == b.f)
                 return a.vertex < b.vertex;
-            return a.f < b.f;
-        });
+            return a.f < b.f; });
         AStarNode currentNode = openList[0];
 
         int current_vertex = currentNode.vertex;
@@ -185,6 +186,7 @@ PathNode* findShortestPath2D(double adjMatrix[100][100], int coords[100][2], int
             }
         }
     }
+    return nullptr;
 }
 
 // Task 3: Maze Navigation with Obstacles
@@ -212,38 +214,38 @@ struct MazeNode
     }
 };
 
-//direction vectors for moving in 8 possible directions
-// up , down, left, right, up-left, up-right, down-left, down-right
-// quy ước 
-// 0 : Up
-// 1 : Down
-// 2 : Left
-// 3 : Right
-// 4 : Up-Left
-// 5 : Up-Right
-// 6 : Down-Left
-// 7 : Down-Right
-int dirX[8] = {0,0,-1,1,-1,1,-1,1};
-int dirY[8] = {1,-1,0,0,1,1,-1,-1};
+// direction vectors for moving in 8 possible directions
+//  up , down, left, right, up-left, up-right, down-left, down-right
+//  quy ước
+//  0 : Up
+//  1 : Down
+//  2 : Left
+//  3 : Right
+//  4 : Up-Left
+//  5 : Up-Right
+//  6 : Down-Left
+//  7 : Down-Right
+int dirX[8] = {0, 0, -1, 1, -1, 1, -1, 1};
+int dirY[8] = {1, -1, 0, 0, 1, 1, -1, -1};
 string directionNames[8] = {"Up", "Down", "Left", "Right", "Up-Left", "Up-Right", "Down-Left", "Down-Right"};
-// 
+//
 
-double heuristicTask3(int x1, int y1, int x2, int y2)
+double heuristicTask3_4(int x1, int y1, int x2, int y2)
 {
     return abs(x1 - x2) + abs(y1 - y2);
 }
-PathNode* findShortestPathMaze(int maze[100][100], int m, int n, int startX,  int startY, int goalX, int goalY)
+PathNode* findShortestPathMaze(int maze[100][100], int m, int n, int startX, int startY, int goalX, int goalY)
 {
     vector<vector<bool>> visited(m, vector<bool>(n, false));
-    vector<MazeNode> openList; 
-    vector<vector<MazeNode>> NodesInfo(m, vector<MazeNode>(n, MazeNode(-1,-1,0,0,0,-1,-1,""))); 
+    vector<MazeNode> openList;
+    vector<vector<MazeNode>> NodesInfo(m, vector<MazeNode>(n, MazeNode(-1, -1, 0, 0, 0, -1, -1, "")));
     double gCost[100][100];
-    for(int i=0;i<m;i++)
-        for(int j=0;j<n;j++)
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
             gCost[i][j] = INF;
-    
+
     gCost[startX][startY] = 0.0;
-    double hCost = heuristicTask3(startX, startY, goalX, goalY);
+    double hCost = heuristicTask3_4(startX, startY, goalX, goalY);
     double f_begin = gCost[startX][startY] + hCost;
     MazeNode startNode(startX, startY, f_begin, gCost[startX][startY], hCost, -1, -1, "");
     openList.push_back(startNode);
@@ -252,69 +254,156 @@ PathNode* findShortestPathMaze(int maze[100][100], int m, int n, int startX,  in
 
     while (!openList.empty())
     {
-        sort(openList.begin(), openList.end(), [](const AStarNode &a, const AStarNode& b){
+        sort(openList.begin(), openList.end(), [](const MazeNode& a, const MazeNode& b)
+             {
             if (a.f == b.f)
                 return a.g < b.g;
-            return a.f < b.f;
-        });
+            return a.f < b.f; });
 
         MazeNode current_Node = openList[0];
         openList.erase(openList.begin());
 
-        if(visited[current_Node.x][current_Node.y])
+        if (visited[current_Node.x][current_Node.y])
             continue;
         visited[current_Node.x][current_Node.y] = 1;
-        
-        if (current_Node.x == goalX && current_Node.y == goalY)
-        {  
+
+        if (current_Node.x == goalX || current_Node.y == goalY)
+        {
             vector<MazeNode> path;
             int x_it = goalX;
             int y_it = goalY;
-            while(x_it != startX && y_it != startY)
+            while (x_it != startX && y_it != startY)
             {
                 path.push_back(NodesInfo[x_it][y_it]);
-                int parent_AssignX =  NodesInfo[x_it][y_it].parentX;
-                int parent_AssignY =  NodesInfo[x_it][y_it].parentY;
+                int parent_AssignX = NodesInfo[x_it][y_it].parentX;
+                int parent_AssignY = NodesInfo[x_it][y_it].parentY;
                 x_it = parent_AssignX;
-                y_it = parent_AssignY; 
-
+                y_it = parent_AssignY;
             }
-           reverse(path.begin(), path.end());
+            reverse(path.begin(), path.end());
 
-           PathNode *head;
-           PathNode*tail;
+            PathNode* head;
+            PathNode* tail;
             head = nullptr;
             tail = nullptr;
-              for (int i = 0; i < path.size(); i++)
-                {
-                    //name is direcion up or down ...
-                    appendNode(head, tail, path[i].direction, path[i].g + path[i].h, path[i].g, path[i].h);
-                }
+            for (int i = 0; i < path.size(); i++)
+            {
+                // name is direcion up or down ...
+                appendNode(head, tail, path[i].direction, path[i].g + path[i].h, path[i].g, path[i].h);
+            }
             return head;
         }
 
-        for ( int dir = 0; dir < 8; dir++)
+        for (int dir = 0; dir < 8; dir++)
         {
             int newX = current_Node.x + dirX[dir];
             int newY = current_Node.y + dirY[dir];
 
             // at here we need to check if newX and newY are within bounds and not an obstacle
             if (newX >= 0 && newX < m && newY >= 0 && newY < n && maze[newX][newY] == 0 && !visited[newX][newY])
-            {        
-               double cost_to_move = (dir < 4)? 1.0 : 1.5 ;// 1 is cost for moving up, down, left, right ; 1.5 is cost for moving diagonally
+            {
+                double cost_to_move = (dir < 4) ? 1.0 : 1.5;  // 1 is cost for moving up, down, left, right ; 1.5 is cost for moving diagonally
                 double newG = gCost[current_Node.x][current_Node.y] + cost_to_move;
-                if(newG < gCost[newX][newY])
+                if (newG < gCost[newX][newY])
                 {
                     gCost[newX][newY] = newG;
-                    double f_new = newG + heuristicTask3(newX, newY, goalX, goalY);
-                    MazeNode neighborNode(newX, newY, f_new, newG, heuristicTask3(newX, newY, goalX, goalY), current_Node.x, current_Node.y, directionNames[dir]);
+                    double f_new = newG + heuristicTask3_4(newX, newY, goalX, goalY);
+                    MazeNode neighborNode(newX, newY, f_new, newG, heuristicTask3_4(newX, newY, goalX, goalY), current_Node.x, current_Node.y, directionNames[dir]);
                     openList.push_back(neighborNode);
                     NodesInfo[newX][newY] = neighborNode;
                 }
             }
-        
-
+        }
     }
-    
+    return nullptr;
+}
 
+//  0 : Up
+//  1 : Down
+//  2 : Left
+//  3 : Right
+//  4 : Up-Left
+//  5 : Up-Right
+//  6 : Down-Left
+//  7 : Down-Right
+// Di chuyển bằng dirX và dirY
+
+// Task 4 : Maze Navigation with Obstacles 2
+PathNode* findPathInMaze2(int maze[100][100], int m, int n, int startX, int startY, int goalX, int goalY, double weightMatrix[100][100])
+{
+    // Implementation would be similar to Task 3, but when calculating newG, we would add the weight from weightMatrix
+    // very easy to implement, just add weightMatrix[newX][newY] to newG calculation
+    vector<vector<bool>> visited(m, vector<bool>(n, false));
+    vector<MazeNode> openList;
+    vector<vector<MazeNode>> NodeInfo(m, vector<MazeNode>(n, MazeNode(-1, -1, 0, 0, 0, -1, -1, "")));
+    // initialize gcost
+    int gCost[m][n];
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            gCost[i][j] = INF;
+
+    gCost[startX][startY] = 0;
+    MazeNode startNode = MazeNode(startX, startY, 0, 0, 0, -1, -1, "");
+    openList.push_back(startNode);
+    NodeInfo[startX][startY] = startNode;
+    while (!openList.empty())
+    {
+        sort(openList.begin(), openList.end(), [](const MazeNode& a, const MazeNode& b)
+             {
+            if (a.f == b.f)
+                return a.g < b.g;
+            return a.f < b.f; });
+
+        MazeNode current_Node = openList[0];
+        openList.erase(openList.begin());
+        if (current_Node.x == goalX && current_Node.y == goalY)
+        {
+            vector<MazeNode> path;
+            int x_it = goalX;
+            int y_it = goalY;
+            while (x_it != startX || y_it != startY)
+            {
+                path.push_back(NodeInfo[x_it][y_it]);
+                int parent_AssignX = NodeInfo[x_it][y_it].parentX;
+                int parent_AssignY = NodeInfo[x_it][y_it].parentY;
+                x_it = parent_AssignX;
+                y_it = parent_AssignY;
+            }
+            reverse(path.begin(), path.end());
+
+            PathNode* head;
+            PathNode* tail;
+            head = nullptr;
+            tail = nullptr;
+            for (int i = 0; i < path.size(); i++)
+            {
+                // name is direcion up or down ...
+                string vertex_name = "(" + to_string(path[i].x) + "," + to_string(path[i].y) + ")";
+                appendNode(head, tail, vertex_name, path[i].g + path[i].h, path[i].g, path[i].h);
+            }
+            return head;
+        }
+
+        // Handle traversing neighbors
+        for (int dir = 0; dir < 8; dir++)
+        {
+            int newX = current_Node.x + dirX[dir];
+            int newY = current_Node.y + dirY[dir];
+
+            // Check bounds and obstacles
+            if (newX >= 0 && newX < m && newY >= 0 && newY < n && maze[newX][newY] == 0 && !visited[newX][newY])
+            {
+                double cost_to_move = (dir < 4) ? 1.0 : 1.5;  // Cost for moving
+                double newG = gCost[current_Node.x][current_Node.y] + cost_to_move + weightMatrix[newX][newY];
+                if (newG < gCost[newX][newY])
+                {
+                    gCost[newX][newY] = newG;
+                    double f_new = newG + heuristicTask3_4(newX, newY, goalX, goalY);
+                    MazeNode neighborNode(newX, newY, f_new, newG, heuristicTask3_4(newX, newY, goalX, goalY), current_Node.x, current_Node.y, directionNames[dir]);
+                    openList.push_back(neighborNode);
+                    NodeInfo[newX][newY] = neighborNode;
+                }
+            }
+        }
+    }
 }
