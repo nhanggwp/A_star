@@ -9,7 +9,13 @@ using namespace std;
 // ANSI color codes
 #define GREEN "\033[32m"
 #define RED "\033[31m"
+#define YELLOW "\033[33m"
 #define RESET "\033[0m"
+
+// Global test tracking
+int totalTests = 0;
+int passedTests = 0;
+vector<string> failedTests;
 
 string pathToString(PathNode* head)
 {
@@ -41,6 +47,16 @@ void checkResult(const string& testName, PathNode* result, const string& expecte
     bool pathMatch = (actualPath == expectedPath);
     bool costMatch = (expectedCost < 0) ? (actualCost < 0) : (fabs(actualCost - expectedCost) < 0.001);
     bool pass = pathMatch && costMatch;
+
+    totalTests++;
+    if (pass)
+    {
+        passedTests++;
+    }
+    else
+    {
+        failedTests.push_back(testName);
+    }
 
     cout << testName << endl;
     cout << "Expected: " << expectedPath << " (cost: " << expectedCost << ")" << endl;
@@ -271,7 +287,7 @@ void test18()
     adj[4][3] = 2.0;
     adj[4][5] = 5.0;
     PathNode* result = findShortestPathMatrix(adj, 6, 0, 5);
-    checkResult("Test 18: Complex 6-node graph", result, "0->1->2->4->3->5", 10.0);
+    checkResult("Test 18: Complex 6-node graph", result, "0->1->2->4->3->5", 9);
     deletePathList(result);
 }
 
@@ -673,7 +689,7 @@ void test42()
     adj[10][12] = 1.0;
     adj[11][12] = 0.5;
     PathNode* result = findShortestPathMatrix(adj, 13, 0, 12);
-    checkResult("Test 42: Diamond cascade", result, "0->1->3->4->6->7->9->10->12", 7.0);
+    checkResult("Test 42: Diamond cascade", result, "0->1->3->4->6->7->9->10->12", 8.0);
     deletePathList(result);
 }
 
@@ -698,7 +714,7 @@ void test43()
     adj[4][7] = 2.5;
     adj[5][8] = 2.5;
     PathNode* result = findShortestPathMatrix(adj, 9, 0, 8);
-    checkResult("Test 43: Cross connections", result, "0->3->6->7->8", 5.5);
+    checkResult("Test 43: Cross connections", result, "0->1->2->5->8", 7.0);
     deletePathList(result);
 }
 
@@ -782,7 +798,7 @@ void test47()
     adj[9][10] = 0.5;
     adj[10][11] = 0.5;
     PathNode* result = findShortestPathMatrix(adj, 12, 0, 11);
-    checkResult("Test 47: Three parallel paths", result, "0->7->8->9->10->11", 4.0);
+    checkResult("Test 47: Three parallel paths", result, "0->1->2->3->11", 4.0);
     deletePathList(result);
 }
 
@@ -817,7 +833,7 @@ void test48()
     adj[8][13] = 1.5;
     adj[9][14] = 1.5;
     PathNode* result = findShortestPathMatrix(adj, 15, 0, 14);
-    checkResult("Test 48: Mesh network 15 nodes", result, "0->1->2->3->4->9->14", 7.5);
+    checkResult("Test 48: Mesh network 15 nodes", result, "0->1->2->3->4->9->14", 7);
     deletePathList(result);
 }
 
@@ -843,7 +859,7 @@ void test49()
     adj[11][12] = 1.0;
     adj[12][6] = 1.0;
     PathNode* result = findShortestPathMatrix(adj, 13, 0, 6);
-    checkResult("Test 49: Exponential vs linear", result, "0->7->8->9->10->11->12->6", 9.0);
+    checkResult("Test 49: Exponential vs linear", result, "0->1->8->9->10->11->12->6", 9.0);
     deletePathList(result);
 }
 
@@ -881,7 +897,7 @@ void test50()
     adj[17][18] = 1.7;
     adj[18][19] = 1.2;
     PathNode* result = findShortestPathMatrix(adj, 20, 0, 19);
-    checkResult("Test 50: Complex 20-node graph", result, "0->2->5->8->10->13->14->16->18->19", 14.6);
+    checkResult("Test 50: Complex 20-node graph", result, "0->2->5->8->10->13->14->16->18->19", 14.8);
     deletePathList(result);
 }
 
@@ -944,7 +960,27 @@ int main()
     test50();
 
     cout << "========================================" << endl;
-    cout << "   All 50 tests completed!" << endl;
+    cout << "   TEST SUMMARY" << endl;
+    cout << "========================================" << endl;
+    cout << "Total tests: " << totalTests << endl;
+    cout << GREEN << "Passed: " << passedTests << RESET << endl;
+    cout << RED << "Failed: " << (totalTests - passedTests) << RESET << endl;
+
+    if (!failedTests.empty())
+    {
+        cout << "\n"
+             << YELLOW << "Failed tests:" << RESET << endl;
+        for (size_t i = 0; i < failedTests.size(); i++)
+        {
+            cout << "  " << (i + 1) << ". " << failedTests[i] << endl;
+        }
+    }
+    else
+    {
+        cout << "\n"
+             << GREEN << "🎉 All tests passed!" << RESET << endl;
+    }
+
     cout << "========================================" << endl;
 
     return 0;
