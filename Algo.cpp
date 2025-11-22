@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <limits>
 #include <string>
 #include <vector>
@@ -71,16 +72,17 @@ PathNode* findShortestPathMatrix(double adjMatrix[100][100], int n, int start, i
             int node = goal;
             while (node != -1)
             {
-                node = parent[node];
                 path.push_back(node);
+                node = parent[node];
             }
+
             reverse(path.begin(), path.end());
 
             PathNode* head = nullptr;
             PathNode* tail = nullptr;
             for (int i = 0; i < path.size(); i++)
             {
-                appendNode(head, tail, to_string(path[i]), gCost[i] + heuristicTask1(i, goal), gCost[i], heuristicTask1(i, goal));
+                appendNode(head, tail, to_string(path[i]), gCost[path[i]] + heuristicTask1(path[i], goal), gCost[path[i]], heuristicTask1(path[i], goal));
             }
             return head;
         }
