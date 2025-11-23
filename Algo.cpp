@@ -370,6 +370,11 @@ PathNode* findPathInMaze2(int maze[100][100], int m, int n, int startX, int star
 {
     vector<vector<double>> weightMatrixVec(m * n, vector<double>(m * n, 0));
 
+    if (maze[startX][startY] == 1 || maze[goalX][goalY] == 1)
+    {
+        return nullptr;
+    }
+    
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < n; j++)
