@@ -91,7 +91,7 @@ PathNode* findShortestPathMatrix(double adjMatrix[100][100], int start, int goal
         {
             if (adjMatrix[current_vertex][v] > 0 && !visited[v])
             {
-                double newG = gCost[current_vertex] + adjMatrix[current_vertex][v];
+                double newG = gCost[current_vertex] + 1;  // becasue we g(n) is number of edges from start to current
                 if (newG < gCost[v])
                 {
                     gCost[v] = newG;
@@ -374,7 +374,7 @@ PathNode* findPathInMaze2(int maze[100][100], int m, int n, int startX, int star
     {
         return nullptr;
     }
-    
+
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < n; j++)

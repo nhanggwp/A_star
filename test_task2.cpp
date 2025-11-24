@@ -76,7 +76,7 @@ void test1()
     adj[1][2] = 5.0;
     adj[2][1] = 5.0;
     PathNode* result = findShortestPath2D(adj, coords, 0, 2, 0);
-    checkResult("Test 1: Straight line Euclidean", result, "0->1->2", 10.0);
+    checkResult("Test 1: Straight line Euclidean", result, "(0, 0)->(5, 0)->(10, 0)", 10);
     deletePathList(result);
 }
 
@@ -88,7 +88,7 @@ void test2()
     adj[0][1] = 5.0;
     adj[1][2] = 5.0;
     PathNode* result = findShortestPath2D(adj, coords, 0, 2, 1);
-    checkResult("Test 2: Manhattan distance", result, "0->1->2", 10.0);
+    checkResult("Test 2: Manhattan distance", result, "(0, 0)->(3, 4)->(6, 8)", 10);
     deletePathList(result);
 }
 
@@ -102,7 +102,7 @@ void test3()
     adj[0][2] = 4.0;
     adj[2][3] = 3.0;
     PathNode* result = findShortestPath2D(adj, coords, 0, 3, 0);
-    checkResult("Test 3: Triangle shortcut", result, "0->1->3", 7.0);
+    checkResult("Test 3: Triangle shortcut", result, "(0, 0)->(3, 0)->(3, 4)", 7);
     deletePathList(result);
 }
 
@@ -113,7 +113,7 @@ void test4()
     int coords[100][2] = {{5, 5}, {10, 10}};
     adj[0][1] = 7.07;
     PathNode* result = findShortestPath2D(adj, coords, 1, 1, 0);
-    checkResult("Test 4: Start equals goal", result, "1", 0.0);
+    checkResult("Test 4: Start equals goal", result, "(10, 10)", 0);
     deletePathList(result);
 }
 
@@ -147,7 +147,7 @@ void test6()
     adj[6][7] = 1;
     adj[7][8] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 8, 1);
-    checkResult("Test 6: 3x3 grid Manhattan", result, "0->1->2->5->8", 4.0);
+    checkResult("Test 6: 3x3 grid Manhattan", result, "(0, 0)->(1, 0)->(2, 0)->(2, 1)->(2, 2)", 4);
     deletePathList(result);
 }
 
@@ -161,7 +161,7 @@ void test7()
     adj[1][3] = 1;
     adj[2][3] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 3, 0);
-    checkResult("Test 7: Diamond Euclidean", result, "0->1->3", 2.0);
+    checkResult("Test 7: Diamond Euclidean", result, "(0, 0)->(1, 0)->(1, 1)", 2);
     deletePathList(result);
 }
 
@@ -177,7 +177,7 @@ void test8()
         if (i < 9) adj[i][i + 1] = 1.0;
     }
     PathNode* result = findShortestPath2D(adj, coords, 0, 9, 0);
-    checkResult("Test 8: 10-node chain", result, "0->1->2->3->4->5->6->7->8->9", 9.0);
+    checkResult("Test 8: 10-node chain", result, "(0, 0)->(1, 0)->(2, 0)->(3, 0)->(4, 0)->(5, 0)->(6, 0)->(7, 0)->(8, 0)->(9, 0)", 9);
     deletePathList(result);
 }
 
@@ -194,7 +194,7 @@ void test9()
     adj[1][5] = 2;
     adj[5][1] = 2;
     PathNode* result = findShortestPath2D(adj, coords, 4, 5, 0);
-    checkResult("Test 9: Star topology", result, "4->0->1->5", 12.0);
+    checkResult("Test 9: Star topology", result, "(0, 5)->(5, 5)->(5, 0)->(5, 2)", 12);
     deletePathList(result);
 }
 
@@ -208,7 +208,7 @@ void test10()
     adj[2][3] = 2;
     adj[3][0] = 2;
     PathNode* result = findShortestPath2D(adj, coords, 0, 2, 1);
-    checkResult("Test 10: Square cycle", result, "0->1->2", 4.0);
+    checkResult("Test 10: Square cycle", result, "(0, 0)->(2, 0)->(2, 2)", 4);
     deletePathList(result);
 }
 
@@ -233,7 +233,7 @@ void test11()
     adj[5][6] = 1;
     adj[6][7] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 7, 0);
-    checkResult("Test 11: Grid 4x2", result, "0->1->2->3->7", 4.0);
+    checkResult("Test 11: Grid 4x2", result, "(0, 0)->(1, 0)->(2, 0)->(3, 0)->(3, 1)", 4);
     deletePathList(result);
 }
 
@@ -246,7 +246,7 @@ void test12()
     adj[0][2] = 7.07;
     adj[2][3] = 7.07;
     PathNode* result = findShortestPath2D(adj, coords, 0, 3, 0);
-    checkResult("Test 12: Diagonal shortcut", result, "0->2->3", 14.14);
+    checkResult("Test 12: Diagonal shortcut", result, "(0, 0)->(5, 5)->(10, 10)", 14.14);
     deletePathList(result);
 }
 
@@ -261,7 +261,7 @@ void test13()
         if (i < 11) adj[i][i + 1] = 1.41;
     }
     PathNode* result = findShortestPath2D(adj, coords, 0, 11, 0);
-    checkResult("Test 13: Zigzag 12 nodes", result, "0->1->2->3->4->5->6->7->8->9->10->11", 15.51);
+    checkResult("Test 13: Zigzag 12 nodes", result, "(0, 0)->(1, 1)->(2, 0)->(3, 1)->(4, 0)->(5, 1)->(6, 0)->(7, 1)->(8, 0)->(9, 1)->(10, 0)->(11, 1)", 15.51);
     deletePathList(result);
 }
 
@@ -276,7 +276,7 @@ void test14()
     adj[4][5] = 1;
     adj[5][2] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 3, 1);
-    checkResult("Test 14: Detour path", result, "0->1->2->3", 3.0);
+    checkResult("Test 14: Detour path", result, "(0, 0)->(1, 0)->(2, 0)->(3, 0)", 3);
     deletePathList(result);
 }
 
@@ -299,7 +299,7 @@ void test15()
     adj[12][13] = 1;
     adj[13][14] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 14, 0);
-    checkResult("Test 15: Sparse 15 nodes", result, "0->5->10->11->12->13->14", 6.0);
+    checkResult("Test 15: Sparse 15 nodes", result, "(0, 0)->(1, 0)->(2, 0)->(2, 1)->(2, 2)->(2, 3)->(2, 4)", 6);
     deletePathList(result);
 }
 
@@ -312,7 +312,7 @@ void test16()
     adj[1][3] = 5;
     adj[3][4] = 5;
     PathNode* result = findShortestPath2D(adj, coords, 0, 4, 0);
-    checkResult("Test 16: L-shape path", result, "0->1->3->4", 15.0);
+    checkResult("Test 16: L-shape path", result, "(0, 0)->(5, 0)->(5, 5)->(5, 10)", 15);
     deletePathList(result);
 }
 
@@ -325,7 +325,7 @@ void test17()
     adj[2][3] = 1.41;
     adj[3][4] = 1.41;
     PathNode* result = findShortestPath2D(adj, coords, 0, 4, 0);
-    checkResult("Test 17: Wave pattern", result, "0->1->2->3->4", 5.64);
+    checkResult("Test 17: Wave pattern", result, "(0, 0)->(1, 1)->(2, 0)->(3, 1)->(4, 0)", 5.64);
     deletePathList(result);
 }
 
@@ -342,7 +342,7 @@ void test18()
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 3; j++) adj[i * 4 + j][i * 4 + j + 1] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 15, 1);
-    checkResult("Test 18: 4x4 grid Manhattan", result, "0->1->2->3->7->11->15", 6.0);
+    checkResult("Test 18: 4x4 grid Manhattan", result, "(0, 0)->(1, 0)->(2, 0)->(3, 0)->(3, 1)->(3, 2)->(3, 3)", 6);
     deletePathList(result);
 }
 
@@ -356,7 +356,7 @@ void test19()
     adj[3][4] = 10;
     adj[0][3] = 14.14;
     PathNode* result = findShortestPath2D(adj, coords, 0, 4, 0);
-    checkResult("Test 19: Cross with shortcut", result, "0->3->4", 24.14);
+    checkResult("Test 19: Cross with shortcut", result, "(0, 0)->(10, 10)->(10, 20)", 24.14);
     deletePathList(result);
 }
 void test20()
@@ -383,7 +383,7 @@ void test20()
     checkResult(
         "Test 20: 20-node zigzag (unequal weights)",
         result,
-        "0->1->2->3->4->5->6->7->8->9->10->11->12->13->14->15->16->17->18->19",
+        "(0, 0)->(2, 3)->(4, 0)->(6, 3)->(8, 0)->(10, 3)->(12, 0)->(14, 3)->(16, 0)->(18, 3)->(20, 0)->(22, 3)->(24, 0)->(26, 3)->(28, 0)->(30, 3)->(32, 0)->(34, 3)->(36, 0)->(38, 3)",
         59.10);
 
     deletePathList(result);
@@ -401,7 +401,7 @@ void test21()
     adj[0][2] = 6;
     adj[2][4] = 6;
     PathNode* result = findShortestPath2D(adj, coords, 0, 4, 0);
-    checkResult("Test 21: Mountain path", result, "0->2->4", 12.0);
+    checkResult("Test 21: Mountain path", result, "(0, 0)->(6, 0)->(12, 0)", 12);
     deletePathList(result);
 }
 
@@ -418,7 +418,7 @@ void test22()
     for (int i = 0; i < 5; i++)
         for (int j = 0; j < 4; j++) adj[i * 5 + j][i * 5 + j + 1] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 24, 1);
-    checkResult("Test 22: 5x5 grid", result, "0->1->2->3->4->9->14->19->24", 8.0);
+    checkResult("Test 22: 5x5 grid", result, "(0, 0)->(1, 0)->(2, 0)->(3, 0)->(4, 0)->(4, 1)->(4, 2)->(4, 3)->(4, 4)", 8);
     deletePathList(result);
 }
 
@@ -431,7 +431,7 @@ void test23()
     adj[1][3] = 1;
     adj[3][4] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 4, 0);
-    checkResult("Test 23: T-junction", result, "0->1->3->4", 3.0);
+    checkResult("Test 23: T-junction", result, "(0, 0)->(1, 0)->(1, 1)->(1, 2)", 3);
     deletePathList(result);
 }
 
@@ -482,7 +482,7 @@ void test24()
     checkResult(
         "Test 24: Circular path (manual coords)",
         result,
-        "0->5->6->7->8->9",
+        "(10, 0)->(-10, 0)->(-8, -5)->(-3, -9)->(3, -9)->(8, -5)",
         45.12);
 
     deletePathList(result);
@@ -499,7 +499,7 @@ void test25()
     adj[2][5] = 5;
     adj[5][6] = 5;
     PathNode* result = findShortestPath2D(adj, coords, 0, 6, 0);
-    checkResult("Test 25: Straight then perpendicular", result, "0->1->2->5->6", 20.0);
+    checkResult("Test 25: Straight then perpendicular", result, "(0, 0)->(5, 0)->(10, 0)->(10, 5)->(10, 10)", 20);
     deletePathList(result);
 }
 
@@ -577,7 +577,7 @@ void test26()
     checkResult(
         "Test 26: 3x4 grid (manual init)",
         result,
-        "0->3->4->7->8->11",
+        "(0, 0)->(1, 0)->(1, 1)->(2, 1)->(2, 2)->(3, 2)",
         5.0);
 
     deletePathList(result);
@@ -590,7 +590,7 @@ void test27()
     for (int i = 0; i < 4; i++) adj[i][i + 1] = 2.83;
     adj[0][4] = 11.31;
     PathNode* result = findShortestPath2D(adj, coords, 0, 4, 0);
-    checkResult("Test 27: Diagonal line", result, "0->4", 11.31);
+    checkResult("Test 27: Diagonal line", result, "(0, 0)->(8, 8)", 11.31);
     deletePathList(result);
 }
 
@@ -685,7 +685,7 @@ void test28()
     checkResult(
         "Test 28: 6x3 grid (manual init)",
         result,
-        "0->1->2->3->4->5->11->17",
+        "(0, 0)->(1, 0)->(2, 0)->(3, 0)->(4, 0)->(5, 0)->(5, 1)->(5, 2)",
         7.0);
 
     deletePathList(result);
@@ -702,7 +702,7 @@ void test29()
     adj[3][5] = 1;
     adj[4][6] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 6, 1);
-    checkResult("Test 29: Binary tree path", result, "0->2->4->6", 3.0);
+    checkResult("Test 29: Binary tree path", result, "(0, 0)->(0, 1)->(0, 2)->(0, 3)", 3);
     deletePathList(result);
 }
 
@@ -853,7 +853,7 @@ void test30()
     checkResult(
         "Test 30: 6x5 grid large (manual init)",
         result,
-        "0->1->2->8->9->15->16->22->23->29",
+        "(0, 0)->(1, 0)->(2, 0)->(2, 1)->(3, 1)->(3, 2)->(4, 2)->(4, 3)->(5, 3)->(5, 4)",
         9.0);
 
     deletePathList(result);
@@ -871,7 +871,7 @@ void test31()
     adj[0][3] = 10;
     adj[3][4] = 10;
     PathNode* result = findShortestPath2D(adj, coords, 0, 4, 0);
-    checkResult("Test 31: Diamond with center", result, "0->2->4", 14.14);
+    checkResult("Test 31: Diamond with center", result, "(0, 0)->(5, 5)->(10, 10)", 14.14);
     deletePathList(result);
 }
 
@@ -886,7 +886,7 @@ void test32()
     }
     for (int i = 0; i < 14; i++) adj[i][i + 1] = 2.83;
     PathNode* result = findShortestPath2D(adj, coords, 0, 14, 0);
-    checkResult("Test 32: Triangle wave", result, "0->1->2->3->4->5->6->7->8->9->10->11->12->13->14", 39.62);
+    checkResult("Test 32: Triangle wave", result, "(0, 0)->(1, 2)->(2, 0)->(3, 0)->(4, 2)->(5, 0)->(6, 0)->(7, 2)->(8, 0)->(9, 0)->(10, 2)->(11, 0)->(12, 0)->(13, 2)->(14, 0)", 39.62);
     deletePathList(result);
 }
 
@@ -897,7 +897,7 @@ void test33()
     for (int i = 0; i < 6; i++) adj[i][i + 1] = 2.24;
     adj[0][6] = 12;
     PathNode* result = findShortestPath2D(adj, coords, 0, 6, 0);
-    checkResult("Test 33: Sawtooth vs straight", result, "0->6", 12.0);
+    checkResult("Test 33: Sawtooth vs straight", result, "(0, 0)->(12, 0)", 12);
     deletePathList(result);
 }
 
@@ -914,7 +914,7 @@ void test34()
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++) adj[i * 5 + j][i * 5 + j + 1] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 19, 0);
-    checkResult("Test 34: 5x4 grid", result, "0->4->8->9->13->14->18->19", 7.0);
+    checkResult("Test 34: 5x4 grid", result, "(0, 0)->(4, 0)->(3, 1)->(4, 1)->(3, 2)->(4, 2)->(3, 3)->(4, 3)", 7);
     deletePathList(result);
 }
 
@@ -933,7 +933,7 @@ void test35()
     adj[5][7] = 3;
     adj[7][8] = 3;
     PathNode* result = findShortestPath2D(adj, coords, 0, 8, 0);
-    checkResult("Test 35: Staircase structure", result, "0->1->2->4->5->7->8", 18.0);
+    checkResult("Test 35: Staircase structure", result, "(0, 0)->(3, 0)->(6, 0)->(6, 3)->(9, 3)->(9, 6)->(12, 6)", 18);
     deletePathList(result);
 }
 
@@ -950,7 +950,7 @@ void test36()
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 3; j++) adj[i * 4 + j][i * 4 + j + 1] = 3;
     PathNode* result = findShortestPath2D(adj, coords, 0, 15, 0);
-    checkResult("Test 36: Wide-spaced 4x4 grid", result, "0->1->5->6->10->11->15", 18.0);
+    checkResult("Test 36: Wide-spaced 4x4 grid", result, "(0, 0)->(3, 0)->(3, 3)->(6, 3)->(6, 6)->(9, 6)->(9, 9)", 18);
     deletePathList(result);
 }
 
@@ -966,7 +966,7 @@ void test37()
     adj[5][2] = 5;
     adj[4][6] = 5;
     PathNode* result = findShortestPath2D(adj, coords, 0, 6, 0);
-    checkResult("Test 37: H-shape network", result, "0->1->4->6", 15.0);
+    checkResult("Test 37: H-shape network", result, "(0, 0)->(5, 0)->(5, 5)->(5, 10)", 15);
     deletePathList(result);
 }
 
@@ -983,7 +983,7 @@ void test38()
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++) adj[i * 4 + j][i * 4 + j + 1] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 11, 1);
-    checkResult("Test 38: 4x3 grid Manhattan", result, "0->1->2->3->7->11", 5.0);
+    checkResult("Test 38: 4x3 grid Manhattan", result, "(0, 0)->(0, 1)->(0, 2)->(0, 3)->(1, 3)->(2, 3)", 5);
     deletePathList(result);
 }
 
@@ -996,7 +996,7 @@ void test39()
     adj[2][4] = 8;
     adj[4][6] = 8;
     PathNode* result = findShortestPath2D(adj, coords, 0, 6, 0);
-    checkResult("Test 39: Wave with shortcuts", result, "0->2->4->6", 24.0);
+    checkResult("Test 39: Wave with shortcuts", result, "(0, 0)->(8, 0)->(16, 0)->(24, 0)", 24);
     deletePathList(result);
 }
 
@@ -1013,7 +1013,7 @@ void test40()
     for (int i = 0; i < 5; i++)
         for (int j = 0; j < 6; j++) adj[i * 7 + j][i * 7 + j + 1] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 34, 0);
-    checkResult("Test 40: 7x5 grid large", result, "0->1->2->3->10->11->18->19->26->27->34", 10.0);
+    checkResult("Test 40: 7x5 grid large", result, "(0, 0)->(1, 0)->(2, 0)->(3, 0)->(3, 1)->(4, 1)->(4, 2)->(5, 2)->(5, 3)->(6, 3)->(6, 4)", 10);
     deletePathList(result);
 }
 
@@ -1060,7 +1060,7 @@ void test41()
     checkResult(
         "Test 41: Diagonal line with good & bad shortcuts",
         result,
-        "0->2->5->7",
+        "(0, 0)->(2, 2)->(5, 5)->(7, 7)",
         8.5);
 
     deletePathList(result);
@@ -1142,7 +1142,7 @@ void test42()
     checkResult(
         "Test 42: Wide grid with good & bad shortcuts",
         result,
-        "0->8->18->19->20->21->22->23",
+        "(0, 0)->(0, 1)->(2, 2)->(3, 2)->(4, 2)->(5, 2)->(6, 2)->(7, 2)",
         7.2);
 
     deletePathList(result);
@@ -1163,7 +1163,7 @@ void test43()
     adj[5][7] = 2;
     adj[7][8] = 2;
     PathNode* result = findShortestPath2D(adj, coords, 0, 8, 1);
-    checkResult("Test 43: Multi-level stairs", result, "0->1->2->4->5->7->8", 12.0);
+    checkResult("Test 43: Multi-level stairs", result, "(0, 0)->(2, 0)->(4, 0)->(4, 2)->(6, 2)->(6, 4)->(8, 4)", 12);
     deletePathList(result);
 }
 
@@ -1251,7 +1251,7 @@ void test44()
     checkResult(
         "Test 44: 9x2 long grid (manual init)",
         result,
-        "0->1->2->3->4->5->6->7->8->17",
+        "(0, 0)->(1, 0)->(2, 0)->(3, 0)->(4, 0)->(5, 0)->(6, 0)->(7, 0)->(8, 0)->(8, 1)",
         9.0);
 
     deletePathList(result);
@@ -1271,7 +1271,7 @@ void test45()
     adj[6][3] = 5;
     adj[5][7] = 5;
     PathNode* result = findShortestPath2D(adj, coords, 0, 7, 0);
-    checkResult("Test 45: Complex mesh", result, "0->1->4->5->7", 20.0);
+    checkResult("Test 45: Complex mesh", result, "(0, 0)->(5, 0)->(5, 5)->(10, 5)->(10, 10)", 20);
     deletePathList(result);
 }
 
@@ -1288,7 +1288,7 @@ void test46()
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 6; j++) adj[i * 7 + j][i * 7 + j + 1] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 20, 1);
-    checkResult("Test 46: 7x3 grid", result, "0->1->2->3->4->5->6->13->20", 8.0);
+    checkResult("Test 46: 7x3 grid", result, "(0, 0)->(1, 0)->(2, 0)->(3, 0)->(4, 0)->(5, 0)->(6, 0)->(6, 1)->(6, 2)", 8);
     deletePathList(result);
 }
 
@@ -1301,7 +1301,7 @@ void test47()
     adj[2][4] = 10;
     adj[0][4] = 20;
     PathNode* result = findShortestPath2D(adj, coords, 0, 5, 0);
-    checkResult("Test 47: Steep climb shortcuts", result, "0->4->5", 25.0);
+    checkResult("Test 47: Steep climb shortcuts", result, "(0, 0)->(12, 16)->(15, 20)", 25);
     deletePathList(result);
 }
 
@@ -1318,7 +1318,7 @@ void test48()
     for (int i = 0; i < 5; i++)
         for (int j = 0; j < 7; j++) adj[i * 8 + j][i * 8 + j + 1] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 39, 0);
-    checkResult("Test 48: 8x5 large grid", result, "0->1->2->3->4->12->13->21->22->30->31->39", 11.0);
+    checkResult("Test 48: 8x5 large grid", result, "(0, 0)->(1, 0)->(2, 0)->(3, 0)->(4, 0)->(4, 1)->(5, 1)->(5, 2)->(6, 2)->(6, 3)->(7, 3)->(7, 4)", 11);
     deletePathList(result);
 }
 
@@ -1337,7 +1337,7 @@ void test49()
     adj[5][7] = 1;
     adj[7][8] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 8, 0);
-    checkResult("Test 49: Diagonal staircase", result, "0->1->2->4->5->7->8", 6.0);
+    checkResult("Test 49: Diagonal staircase", result, "(0, 0)->(1, 0)->(2, 0)->(2, 1)->(3, 1)->(3, 2)->(4, 2)", 6);
     deletePathList(result);
 }
 
@@ -1354,7 +1354,7 @@ void test50()
     for (int i = 0; i < 5; i++)
         for (int j = 0; j < 9; j++) adj[i * 10 + j][i * 10 + j + 1] = 1;
     PathNode* result = findShortestPath2D(adj, coords, 0, 49, 0);
-    checkResult("Test 50: 10x5 massive grid", result, "0->1->2->3->4->5->6->16->17->27->28->38->39->49", 13.0);
+    checkResult("Test 50: 10x5 massive grid", result, "(0, 0)->(1, 0)->(2, 0)->(3, 0)->(4, 0)->(5, 0)->(6, 0)->(6, 1)->(7, 1)->(7, 2)->(8, 2)->(8, 3)->(9, 3)->(9, 4)", 13);
     deletePathList(result);
 }
 
