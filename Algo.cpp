@@ -32,21 +32,52 @@ struct AStarNode
     }
 };
 
-double heuristicTask1(int current, int goal)
+// BFS ngược từ goal để tính khoảng cách ngắn nhất đến tất cả các đỉnh
+void computeHeuristicBFS(double adjMatrix[100][100], int goal, std::vector<double>& heuristic)
 {
-    // Simple heuristic: return 0 for Dijkstra-like behavior
-    return 0.0;
+    int n = 100;
+    std::vector<bool> visited(n, false);
+    std::vector<int> queue;
+
+    for (int i = 0; i < n; i++)
+    {
+        heuristic[i] = INF;
+    }
+    heuristic[goal] = 0;
+    visited[goal] = true;
+    queue.push_back(goal);
+
+    int front = 0;
+    while (front < queue.size())
+    {
+        int u = queue[front++];
+
+        for (int v = 0; v < n; v++)
+        {
+            if (adjMatrix[v][u] > 0 && adjMatrix[v][u] != INF && !visited[v])
+            {
+                visited[v] = true;
+                heuristic[v] = heuristic[u] + 1;  // Số cạnh tối thiểu
+                queue.push_back(v);
+            }
+        }
+    }
 }
+
 PathNode* findShortestPathMatrix(double adjMatrix[100][100], int start, int goal)
 {
     int n = 100;
+
+    // Tính heuristic bằng BFS ngược từ goal
+    std::vector<double> heuristic(n, INF);
+    computeHeuristicBFS(adjMatrix, goal, heuristic);
+
     std::vector<bool> visited(n, false);
     std::vector<AStarNode> openList;
     std::vector<int> parent(n, -1);
     std::vector<double> gCost(n, INF);
     gCost[start] = 0.0;
-    double hCost = heuristicTask1(start, goal);
-    gCost[start] = 0;
+    double hCost = heuristic[start];
     double f_begin = gCost[start] + hCost;
     openList.push_back(AStarNode(start, f_begin, gCost[start], hCost, -1));
 
@@ -58,9 +89,17 @@ PathNode* findShortestPathMatrix(double adjMatrix[100][100], int start, int goal
                 return a.vertex < b.vertex;
             return a.f < b.f; });
 
+        std::cout << "OpenList after sort:\n";
+        for (const auto& node : openList)
+        {
+            std::cout << "  vertex=" << node.vertex << " f=" << node.f << " g=" << node.g << " h=" << node.h << "\n";
+        }
+
         int current_vertex = openList[0].vertex;
         AStarNode currentNode = openList[0];
         openList.erase(openList.begin());
+
+        std::cout << "Selected: vertex=" << current_vertex << " f=" << currentNode.f << " g=" << currentNode.g << " h=" << currentNode.h << "\n\n";
 
         if (visited[current_vertex])
             continue;
@@ -83,7 +122,10 @@ PathNode* findShortestPathMatrix(double adjMatrix[100][100], int start, int goal
             PathNode* tail = nullptr;
             for (int i = 0; i < path.size(); i++)
             {
-                appendNode(head, tail, to_string(path[i]), gCost[path[i]] + heuristicTask1(path[i], goal), gCost[path[i]], heuristicTask1(path[i], goal));
+                // Dùng heuristic đã tính từ BFS
+                double h_val = heuristic[path[i]];
+                double f_val = gCost[path[i]] + h_val;
+                appendNode(head, tail, to_string(path[i]), f_val, gCost[path[i]], h_val);
             }
             return head;
         }
@@ -91,12 +133,13 @@ PathNode* findShortestPathMatrix(double adjMatrix[100][100], int start, int goal
         {
             if (adjMatrix[current_vertex][v] > 0 && !visited[v])
             {
-                double newG = gCost[current_vertex] + 1;  // becasue we g(n) is number of edges from start to current
+                double newG = gCost[current_vertex] + 1;
                 if (newG < gCost[v])
                 {
                     gCost[v] = newG;
-                    double f_new = newG + heuristicTask1(v, goal);
-                    openList.push_back(AStarNode(v, f_new, newG, heuristicTask1(v, goal), current_vertex));
+                    double h_new = heuristic[v];
+                    double f_new = newG + h_new;
+                    openList.push_back(AStarNode(v, f_new, newG, h_new, current_vertex));
                 }
             }
         }
@@ -149,6 +192,18 @@ PathNode* findShortestPath2D(double adjMatrix[100][100], int coords[100][2], int
             if (a.f == b.f)
                 return a.vertex < b.vertex;
             return a.f < b.f; });
+
+        // std::cout << "OpenList (size=" << openList.size() << "):\n";
+        // for (size_t __i = 0; __i < openList.size(); ++__i)
+        // {
+        //     const AStarNode& __nd = openList[__i];
+        //     int __vx = coords[__nd.vertex][0];
+        //     int __vy = coords[__nd.vertex][1];
+        //     std::cout
+        //         << " [" << __i << "] vertex=" << __nd.vertex
+        //         << " coord=(" << __vx << "," << __vy << ")"
+        //         << " f=" << __nd.f << " g=" << __nd.g << " h=" << __nd.h << "\n";
+        // }
         AStarNode currentNode = openList[0];
 
         int current_vertex = currentNode.vertex;
@@ -173,9 +228,9 @@ PathNode* findShortestPath2D(double adjMatrix[100][100], int coords[100][2], int
             PathNode* tail = nullptr;
             for (int i = 0; i < path.size(); i++)
             {
-                double g_rounded = round(gCost[path[i]] * 100) / 100;
+                double g_rounded = round(gCost[path[i]] * 10000) / 10000;
                 double h_val = heuristicTask2(coords, path[i], goal, mode);
-                double f_rounded = round((g_rounded + h_val) * 100) / 100;
+                double f_rounded = round((g_rounded + h_val) * 10000) / 10000;
                 appendNode(head, tail, "(" + to_string(coords[path[i]][0]) + ", " + to_string(coords[path[i]][1]) + ")", f_rounded, g_rounded, h_val);
             }
             return head;
@@ -224,17 +279,17 @@ struct MazeNode
 
 // ...existing code...
 // direction vectors for moving in 8 possible directions
-// quy ước (maze coordinate: x=column, y=row)
-//  0 : Up         (x+0, y-1)
-//  1 : Down       (x+0, y+1)
-//  2 : Left       (x-1, y+0)
-//  3 : Right      (x+1, y+0)
+// quy ước (maze coordinate: x=row, y=column)
+//  0 : Up         (x-1, y+0)
+//  1 : Down       (x+1, y+0)
+//  2 : Left       (x+0, y-1)
+//  3 : Right      (x+0, y+1)
 //  4 : Up-Left    (x-1, y-1)
-//  5 : Up-Right   (x+1, y-1)
-//  6 : Down-Left  (x-1, y+1)
+//  5 : Up-Right   (x-1, y+1)
+//  6 : Down-Left  (x+1, y-1)
 //  7 : Down-Right (x+1, y+1)
-int dirX[8] = {0, 0, -1, 1, -1, 1, -1, 1};
-int dirY[8] = {-1, 1, 0, 0, -1, -1, 1, 1};
+int dirX[8] = {-1, 1, 0, 0, -1, -1, 1, 1};
+int dirY[8] = {0, 0, -1, 1, -1, 1, -1, 1};
 string directionNames[8] = {
     "Up", "Down", "Left", "Right", "Up-Left", "Up-Right", "Down-Left", "Down-Right"};
 
